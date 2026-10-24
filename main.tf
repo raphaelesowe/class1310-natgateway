@@ -1,6 +1,6 @@
 resource "aws_vpc" "main" {
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
+  cidr_block           = "10.0.0.0/16"
+  instance_tenancy     = "default"
   enable_dns_support   = true
   enable_dns_hostnames = true
 
@@ -10,8 +10,8 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "public" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
   tags = {
     Name = "test-public-subnet"
@@ -19,8 +19,8 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.2.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.2.0/24"
   availability_zone = "us-east-1a"
   tags = {
     Name = "test-private-subnet"
@@ -53,8 +53,8 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_eip" "nat" {
-  domain = "vpc"
-  depends_on                = [aws_internet_gateway.gw]
+  domain     = "vpc"
+  depends_on = [aws_internet_gateway.gw]
   tags = {
     Name = "my-nat-eip"
   }
@@ -74,7 +74,7 @@ resource "aws_nat_gateway" "example" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.example.id
   }
 
@@ -89,18 +89,18 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_instance" "public_instance" {
-  subnet_id = aws_subnet.public.id  
-  ami           = "ami-0b6d9d3d33ba97d99"
-  instance_type = "t3.micro"
+  subnet_id                   = aws_subnet.public.id
+  ami                         = "ami-0b6d9d3d33ba97d99"
+  instance_type               = "t3.micro"
   associate_public_ip_address = true
-  key_name      = "mykeypair"
+  key_name                    = "mykeypair"
 
   tags = {
     Name = "test-public-instance"
   }
 }
 resource "aws_instance" "private_instance" {
-  subnet_id = aws_subnet.private.id  
+  subnet_id     = aws_subnet.private.id
   ami           = "ami-0b6d9d3d33ba97d99"
   instance_type = "t3.micro"
   key_name      = "mykeypair"
