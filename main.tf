@@ -5,7 +5,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "test-vpc"
+    Name = "jenkins-vpc"
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_subnet" "public" {
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
   tags = {
-    Name = "test-public-subnet"
+    Name = "jenkins-public-subnet"
   }
 }
 
